@@ -8,12 +8,12 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with your secret key
 
 PANEL_QUESTIONS_SHEET_IDS = {
-    007: '1Z6xYRHIK6acEU4enmNLyR7jtTMMS86I3LgrqRoeHO-M',  # Panel 1 Sheet ID
+    1007: '1Z6xYRHIK6acEU4enmNLyR7jtTMMS86I3LgrqRoeHO-M',  # Panel 1 Sheet ID
     8085: '1JxclR4A23a11HMAG7JMc_3yzh2LwbjLWBLJMg5xk2vA',  # Replace with Panel 2 Sheet ID
     # Add more panels as needed
 }
 GOOGLE_SHEET_ID = {
-    007: '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ',  # Panel 1 Sheet ID
+    1007: '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ',  # Panel 1 Sheet ID
     8085: '1KV9ejInqh9r-akB3FVvI20Z9HCobX6tItUtyfuYcy-E',  # Replace with Panel 2 Sheet ID
     # Add more panels as needed
 }
