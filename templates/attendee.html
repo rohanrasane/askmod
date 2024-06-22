@@ -106,7 +106,7 @@
 
     <script>
         async function loadAttendeeQuestions() {
-            const response = await fetch('/attendee/questions');
+            const response = await fetch('/attendee/{{ panel_number }}/questions');
             const questions = await response.json();
             displayAttendeeQuestions(questions);
         }
@@ -133,7 +133,7 @@
             const name = document.getElementById('name').value;
             const question = document.getElementById('question').value;
 
-            const response = await fetch('/attendee', {
+            const response = await fetch('/attendee/{{ panel_number }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -151,7 +151,7 @@
         }
 
         async function upvoteQuestion(questionId) {
-            const response = await fetch(`/attendee/upvote/${questionId}`, {
+            const response = await fetch(`/attendee/{{ panel_number }}/upvote/${questionId}`, {
                 method: 'POST'
             });
 
