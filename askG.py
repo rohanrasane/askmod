@@ -18,13 +18,14 @@ MODERATOR_PASSWORD = 'bconnexplore'  # Set your password here
 
 
 
+
 # Google Sheets authentication
 def get_gspread_client():
+    const credential = JSON.parse(
+      Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, "base64").toString()
+    );
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    creds = service_account.Credentials.from_service_account_info(
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
-        scopes=scope
-    )
+    creds = credential;
     client = gspread.authorize(creds)
     return client
 
