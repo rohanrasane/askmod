@@ -115,7 +115,8 @@ def get_questions():
 def moderator_login():
     if request.method == 'POST':
         password = request.form['password']
-        if password == get_mod_pwd():
+        pwdEnv = get_mod_pwd()
+        if password == pwdEnv:
             session['moderator'] = True
             return redirect(url_for('moderator'))
         else:
