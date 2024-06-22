@@ -13,7 +13,8 @@ app.secret_key = 'your_secret_key'  # Replace with your secret key
 PANEL_QUESTIONS_SHEET_ID = '1Z6xYRHIK6acEU4enmNLyR7jtTMMS86I3LgrqRoeHO-M'  # Replace with your panel questions Google Sheet ID
 GOOGLE_SHEET_ID = '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ'  # Replace with your actual Google Sheet ID
 
-MODERATOR_PASSWORD = 'bconnexplore'  # Set your password here
+def get_mod_pwd():
+    return os.environ.get("MODERATOR_PASSWORD")
 
 def create_keyfile_dict():
     variables_keys = {
@@ -114,7 +115,7 @@ def get_questions():
 def moderator_login():
     if request.method == 'POST':
         password = request.form['password']
-        if password == MODERATOR_PASSWORD:
+        if password == get_mod_pwd():
             session['moderator'] = True
             return redirect(url_for('moderator'))
         else:
