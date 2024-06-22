@@ -1,15 +1,16 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "./ask.py",
-            "use": "@vercel/python"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "ask.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    { "src": "/attendee/questions", "dest": "/ask.py" },
+    { "src": "/attendee/upvote/(.*)", "dest": "/ask.py" },
+    { "src": "/attendee", "dest": "/ask.py" },
+    { "src": "/questions", "dest": "/ask.py" },
+    { "src": "/(.*)", "dest": "/ask.py" }
+  ]
 }
