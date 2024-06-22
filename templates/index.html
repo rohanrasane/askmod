@@ -111,4 +111,30 @@
                     <div class="question-card" style="background-color: ${backgroundColor};">
                         <h2>${question['whom to ask']}</h2>
                         <p class="question-text">${question.question}</p>
-                        <div class="time-info
+                        <div class="time-info">
+                            <p>Duration: ${question['question duration']}</p>
+                            <p>Planned Start Time: ${question['current planned time']}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayQuestion();
+            }
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                displayQuestion();
+            }
+        });
+
+        loadQuestions();
+    </script>
+</body>
+</html>
