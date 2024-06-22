@@ -1,10 +1,7 @@
 import os
-import base64
-import json
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 import gspread
 from google.oauth2 import service_account
-import pandas as pd
 import uuid
 
 app = Flask(__name__)
