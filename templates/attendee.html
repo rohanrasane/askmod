@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendee Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        form, .question-list {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .question-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ask a Question</h1>
+    <form id="question-form">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="question">Your Question:</label>
+        <textarea id="question" name="question" rows="4" required></textarea>
+
+        <button type="button" onclick="submitQuestion()">Submit</button>
+    </form>
+
+    <div class="question-list" id="question-list">
+        <!-- Questions will be dynamically added here -->
+    </div>
+
+    <script>
+        async function loadAttendeeQuestions() {
+            const response = await fetch('/attendee/questions');
+            const questions = await response.json();
+            displayAttendeeQuestions(questions);
+        }
+
+        function displayAttendeeQuestions(questions) {
+            const questionList = document.getElementById('question-list');
+            questionList.innerHTML = '';
+
+            questions.forEach(question => {
+                const questionItem = document.createElement('div');
+                questionItem.classList.add('question-item');
+                questionItem.innerHTML = `
+                    <div>
+                        <p><strong>${question.name}:</strong> ${question.question}</p>
+                        <p>Upvotes: ${question.upvotes}</p>
+                    </div>
+                    <button onclick="upvoteQuestion('${question.id}')">Upvote</button>
+                `;
+                questionList.appendChild(questionItem);
+            });
+        }
+
+        async function submitQuestion() {
+            const name = document.getElementById('name').value;
+            const question = document.getElementById('question').value;
+
+            const response = await fetch('/attendee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, question })
+            });
+
+            if (response.ok) {
+                document.getElementById('name').value = '';
+                document.getElementById('question').value = '';
+                loadAttendeeQuestions();
+            } else {
+                alert('Failed to submit question');
+            }
+        }
+
+        async function upvoteQuestion(questionId) {
+            const response = await fetch(`/attendee/upvote/${questionId}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                loadAttendeeQuestions();
+            } else {
+                alert('Failed to upvote question');
+            }
+        }
+
+        // Load attendee questions when the page loads
+        loadAttendeeQuestions();
+    </script>
+</body>
+</html>
