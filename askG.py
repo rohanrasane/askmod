@@ -4,6 +4,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import os
 import uuid
+import ServiceAccountCredentials
 
 app = Flask(__name__)
 
@@ -13,10 +14,18 @@ GOOGLE_SHEET_ID = '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ'  # Replace with
 
 MODERATOR_PASSWORD = 'bconnexplore'  # Set your password here
 
+
+
+
+
+
 # Google Sheets authentication
 def get_gspread_client():
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('serviceaccount.json', scope)
+    # Fetch the JSON credentials from the environment variable
+    google_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    # Use the credentials to authenticate
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(google_credentials)
     client = gspread.authorize(creds)
     return client
 
