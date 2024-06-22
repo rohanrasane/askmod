@@ -1,15 +1,16 @@
 import os
-from flask import Flask, jsonify, render_template, request, redirect, url_for, json
+import base64
+import json
+from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 import gspread
 from google.oauth2 import service_account
-import ServiceAccountCredentials
 import pandas as pd
 import uuid
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Replace with your secret key
 
 PANEL_QUESTIONS_SHEET_ID = '1Z6xYRHIK6acEU4enmNLyR7jtTMMS86I3LgrqRoeHO-M'  # Replace with your panel questions Google Sheet ID
-ATTENDEE_QUESTIONS_FILE = 'attendee_questions.xlsx'
 GOOGLE_SHEET_ID = '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ'  # Replace with your actual Google Sheet ID
 
 MODERATOR_PASSWORD = 'bconnexplore'  # Set your password here
@@ -19,7 +20,7 @@ def create_keyfile_dict():
         "type": os.environ.get("SHEET_TYPE"),
         "project_id": os.environ.get("SHEET_PROJECT_ID"),
         "private_key_id": os.environ.get("SHEET_PRIVATE_KEY_ID"),
-        "private_key": os.environ.get("SHEET_PRIVATE_KEY"),
+        "private_key": os.environ.get("SHEET_PRIVATE_KEY").replace('\\n', '\n'),
         "client_email": os.environ.get("SHEET_CLIENT_EMAIL"),
         "client_id": os.environ.get("SHEET_CLIENT_ID"),
         "auth_uri": os.environ.get("SHEET_AUTH_URI"),
@@ -30,15 +31,14 @@ def create_keyfile_dict():
     }
     return variables_keys
 
-
 # Google Sheets authentication
 def get_gspread_client():
-   scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-   creds = ServiceAccountCredentials.from_json_keyfile_dict(create_keyfile_dict(), scope)
-   client = gspread.authorize(creds)
-   return client
+    creds_dict = create_keyfile_dict()
+    creds = service_account.Credentials.from_service_account_info(creds_dict)
+    client = gspread.authorize(creds)
+    return client
 
-# Load panelist questions from Excel file
+# Load panelist questions from Google Sheets
 def load_panel_questions():
     client = get_gspread_client()
     sheet = client.open_by_key(PANEL_QUESTIONS_SHEET_ID).sheet1
@@ -78,7 +78,9 @@ def home():
 
 @app.route('/moderator')
 def moderator():
-    return render_template('index.html')
+    if 'moderator' in session:
+        return render_template('index.html')
+    return redirect(url_for('moderator_login'))
 
 @app.route('/attendee')
 def attendee():
@@ -112,6 +114,7 @@ def moderator_login():
     if request.method == 'POST':
         password = request.form['password']
         if password == MODERATOR_PASSWORD:
+            session['moderator'] = True
             return redirect(url_for('moderator'))
         else:
             return render_template('moderator_login.html', error='Invalid password')
