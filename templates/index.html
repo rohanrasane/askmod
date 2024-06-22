@@ -90,14 +90,15 @@
         <button id="prev-btn">Prev</button>
         <button id="next-btn">Next</button>
     </div>
-    <a href="/attendee" class="attendee-link">Go to Attendee Page</a>
+    <a href="{{ url_for('attendee', panel_number=panel_number) }}" class="attendee-link">Go to Attendee Page</a>
+
 
     <script>
         let currentIndex = 0;
         let questions = [];
 
         async function loadQuestions() {
-            const response = await fetch('/questions');
+            const response = await fetch('/questions/{{ panel_number }}');
             const newQuestions = await response.json();
             questions = newQuestions;
             displayQuestion();
