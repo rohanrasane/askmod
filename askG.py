@@ -13,24 +13,29 @@ GOOGLE_SHEET_ID = '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ'  # Replace with
 
 MODERATOR_PASSWORD = 'bconnexplore'  # Set your password here
 
-
-
-
-
+def create_keyfile_dict():
+    variables_keys = {
+        "type": os.environ.get("SHEET_TYPE"),
+        "project_id": os.environ.get("SHEET_PROJECT_ID"),
+        "private_key_id": os.environ.get("SHEET_PRIVATE_KEY_ID"),
+        "private_key": os.environ.get("SHEET_PRIVATE_KEY"),
+        "client_email": os.environ.get("SHEET_CLIENT_EMAIL"),
+        "client_id": os.environ.get("SHEET_CLIENT_ID"),
+        "auth_uri": os.environ.get("SHEET_AUTH_URI"),
+        "token_uri": os.environ.get("SHEET_TOKEN_URI"),
+        "auth_provider_x509_cert_url": os.environ.get("SHEET_AUTH_PROVIDER_X509_CERT_URL"),
+        "client_x509_cert_url": os.environ.get("SHEET_CLIENT_X509_CERT_URL"),
+       "universe_domain": os.environ.get("SHEET_UNIVERSE_DOMAIN")"
+    }
+    return variables_keys
 
 
 # Google Sheets authentication
 def get_gspread_client():
-   # Decode the base64 encoded credentials
-    credential_base64 = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-    credential_json = base64.b64decode(credential_base64).decode('utf-8')
-    credentials_info = json.loads(credential_json)
-    
-    # Set up the credentials and client
-    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    creds = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
-    client = gspread.authorize(creds)
-    return client
+   scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+   creds = ServiceAccountCredentials.from_json_keyfile_dict(create_keyfile_dict(), scope)
+   client = gspread.authorize(creds)
+   return client
 
 # Load panelist questions from Excel file
 def load_panel_questions():
