@@ -25,7 +25,7 @@ def create_keyfile_dict():
         "token_uri": os.environ.get("SHEET_TOKEN_URI"),
         "auth_provider_x509_cert_url": os.environ.get("SHEET_AUTH_PROVIDER_X509_CERT_URL"),
         "client_x509_cert_url": os.environ.get("SHEET_CLIENT_X509_CERT_URL"),
-       "universe_domain": os.environ.get("SHEET_UNIVERSE_DOMAIN")"
+        "universe_domain": os.environ.get("SHEET_UNIVERSE_DOMAIN")
     }
     return variables_keys
 
