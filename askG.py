@@ -35,7 +35,8 @@ def create_keyfile_dict():
 def get_gspread_client():
     creds_dict = create_keyfile_dict()
     creds = service_account.Credentials.from_service_account_info(creds_dict)
-    client = gspread.authorize(creds)
+    scoped_creds = creds.with_scopes(['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive'])
+    client = gspread.authorize(scoped_creds)
     return client
 
 # Load panelist questions from Google Sheets
