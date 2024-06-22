@@ -18,6 +18,16 @@ GOOGLE_SHEET_ID = {
     # Add more panels as needed
 }
 
+# Decorator to check if user is logged in
+def login_required(f):
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session and session['logged_in']:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('moderator_login', panel_number=kwargs.get('panel_number')))
+    wrap.__name__ = f.__name__
+    return wrap
+
 def get_mod_pwd():
     return os.environ.get("MODERATOR_PASSWORD")
 
@@ -94,6 +104,7 @@ def home(panel_number):
     return redirect(url_for('moderator_login', panel_number=panel_number))
 
 @app.route('/moderator/<int:panel_number>')
+@login_required
 def moderator(panel_number):
     return render_template('index.html', panel_number=panel_number)
 
@@ -120,6 +131,7 @@ def upvote_attendee_question_route(panel_number, question_id):
     return jsonify({'status': 'success'})
 
 @app.route('/questions/<int:panel_number>', methods=['GET'])
+@login_required
 def get_questions(panel_number):
     questions = load_panel_questions(panel_number)
     return jsonify(questions)
@@ -130,6 +142,7 @@ def moderator_login(panel_number):
     if request.method == 'POST':
         password = request.form['password']
         if password == get_mod_pwd():
+            session['logged_in'] = True
             return redirect(url_for('moderator', panel_number=panel_number))
         else:
             return render_template('moderator_login.html', panel_number=panel_number, error='Invalid password')
