@@ -1,10 +1,9 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for
-import pandas as pd
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import os
+from flask import Flask, jsonify, render_template, request
+import gspread
+from google.oauth2 import service_account
+import pandas as pd
 import uuid
-import ServiceAccountCredentials
 
 app = Flask(__name__)
 
