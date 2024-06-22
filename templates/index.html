@@ -13,16 +13,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            margin: 0;
         }
         .question-card {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 20px;
-            max-width: 600px;
+            max-width: 100%;
             width: 100%;
             margin-bottom: 20px;
             transition: background-color 0.3s;
+            box-sizing: border-box;
         }
         h2 {
             margin-top: 0;
@@ -32,10 +34,12 @@
         .question-text {
             font-size: 1.5em;
             margin: 10px 0;
+            word-wrap: break-word;
         }
         .time-info {
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
         }
         p {
             margin: 5px 0;
@@ -50,6 +54,8 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
+            flex: 1;
+            max-width: 100px;
         }
         button:hover {
             background-color: #0056b3;
@@ -71,11 +77,16 @@
         .attendee-link:hover {
             background-color: #218838;
         }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <div id="question-container"></div>
-    <div>
+    <div class="button-container">
         <button id="prev-btn">Prev</button>
         <button id="next-btn">Next</button>
     </div>
