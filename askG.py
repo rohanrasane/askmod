@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for, json
 import gspread
 from google.oauth2 import service_account
 import pandas as pd
@@ -21,11 +21,14 @@ MODERATOR_PASSWORD = 'bconnexplore'  # Set your password here
 
 # Google Sheets authentication
 def get_gspread_client():
-    const credential = JSON.parse(
-      Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, "base64").toString()
-    );
+   # Decode the base64 encoded credentials
+    credential_base64 = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    credential_json = base64.b64decode(credential_base64).decode('utf-8')
+    credentials_info = json.loads(credential_json)
+    
+    # Set up the credentials and client
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    creds = credential;
+    creds = service_account.Credentials.from_service_account_info(credentials_info, scopes=scope)
     client = gspread.authorize(creds)
     return client
 
