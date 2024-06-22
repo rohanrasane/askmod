@@ -95,13 +95,6 @@
     <script>
         let currentIndex = 0;
         let questions = [];
-        const panelistColors = {
-            'Raj': '#ffcccb', // Light red
-            'PK': '#ccffcc', // Light green
-            'Pratik': '#ccccff', // Light blue
-            'Nitin': '#ffebcc', // Light orange
-            'Rohan': '#e0ccff' // Light purple
-        };
 
         async function loadQuestions() {
             const response = await fetch('/questions');
@@ -113,51 +106,9 @@
         function displayQuestion() {
             if (questions.length > 0 && currentIndex >= 0 && currentIndex < questions.length) {
                 const question = questions[currentIndex];
-                const panelist = question['whom to ask'];
-                const backgroundColor = panelistColors[panelist] || '#ffffff';
+                const backgroundColor = question['color'] || '#ffffff';
                 document.getElementById('question-container').innerHTML = `
                     <div class="question-card" style="background-color: ${backgroundColor};">
-                        <h2>${panelist}</h2>
+                        <h2>${question['whom to ask']}</h2>
                         <p class="question-text">${question.question}</p>
-                        <div class="time-info">
-                            <p><strong>Duration:</strong> ${question['question duration']}</p>
-                            <p><strong>Planned Time:</strong> ${question['current planned time']}</p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                document.getElementById('question-container').innerHTML = '<p>No questions available.</p>';
-            }
-
-            document.getElementById('prev-btn').disabled = currentIndex <= 0;
-            document.getElementById('next-btn').disabled = currentIndex >= questions.length - 1;
-        }
-
-        document.getElementById('prev-btn').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                displayQuestion();
-            }
-        });
-
-        document.getElementById('next-btn').addEventListener('click', async () => {
-            if (currentIndex < questions.length - 1) {
-                currentIndex++;
-                displayQuestion();
-            } else {
-                await loadQuestions();
-                if (currentIndex < questions.length - 1) {
-                    currentIndex++;
-                    displayQuestion();
-                } else {
-                    currentIndex = questions.length - 1;
-                    displayQuestion();
-                }
-            }
-        });
-
-        // Load questions when the page loads
-        loadQuestions();
-    </script>
-</body>
-</html>
+                        <div class="time-info
