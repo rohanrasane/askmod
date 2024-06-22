@@ -129,7 +129,7 @@ def moderator_login(panel_number):
     print(panel_number)
     if request.method == 'POST':
         password = request.form['password']
-        if password == MODERATOR_PASSWORD:
+        if password == get_mod_pwd():
             return redirect(url_for('moderator', panel_number=panel_number))
         else:
             return render_template('moderator_login.html', panel_number=panel_number, error='Invalid password')
