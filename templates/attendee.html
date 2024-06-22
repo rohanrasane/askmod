@@ -14,15 +14,17 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            margin: 0;
         }
         form, .question-list {
-            max-width: 600px;
             width: 100%;
+            max-width: 600px;
             background-color: #ffffff;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             margin-bottom: 20px;
+            box-sizing: border-box;
         }
         input[type="text"], textarea {
             width: 100%;
@@ -35,23 +37,54 @@
         button {
             padding: 10px 20px;
             font-size: 16px;
-            margin: 5px;
+            margin: 5px 0;
             border: none;
             border-radius: 4px;
             background-color: #007bff;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
         }
         button:hover {
             background-color: #0056b3;
         }
         .question-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
+            flex-direction: column;
+            padding: 10px 0;
             border-bottom: 1px solid #ccc;
+        }
+        .question-item:last-child {
+            border-bottom: none;
+        }
+        .question-item div {
+            margin-bottom: 10px;
+        }
+        .upvote-button {
+            align-self: flex-end;
+            padding: 5px 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: auto;
+        }
+        .upvote-button:hover {
+            background-color: #218838;
+        }
+        @media (min-width: 600px) {
+            button, .upvote-button {
+                width: auto;
+            }
+            .question-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -90,7 +123,7 @@
                         <p><strong>${question.name}:</strong> ${question.question}</p>
                         <p>Upvotes: ${question.upvotes}</p>
                     </div>
-                    <button onclick="upvoteQuestion('${question.id}')">Upvote</button>
+                    <button class="upvote-button" onclick="upvoteQuestion('${question.id}')">Upvote</button>
                 `;
                 questionList.appendChild(questionItem);
             });
