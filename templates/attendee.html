@@ -89,6 +89,7 @@
     </style>
 </head>
 <body>
+    <h1 id="panel-name"></h1>
     <h1>Ask a Question</h1>
     <form id="question-form">
         <label for="name">Your Name:</label>
@@ -107,8 +108,17 @@
     <script>
         async function loadAttendeeQuestions() {
             const response = await fetch('/attendee/{{ panel_number }}/questions');
-            const questions = await response.json();
+            const panelDetails = await response.json();
+            questions = panelDetails.questions;
+            panelName = panelDetails.name;
+            displayPanelName(panelName);
             displayAttendeeQuestions(questions);
+        }
+        
+        function displayPanelName(panelName) {
+            if (panelName) {
+                document.getElementById('panel-name').innerHTML = `${panelName}`;
+            }
         }
 
         function displayAttendeeQuestions(questions) {
