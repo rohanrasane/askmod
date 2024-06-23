@@ -17,7 +17,10 @@ GOOGLE_SHEET_ID = {
     8085: '1KV9ejInqh9r-akB3FVvI20Z9HCobX6tItUtyfuYcy-E',  # Replace with Panel 2 Sheet ID
     # Add more panels as needed
 }
-
+PANEL_NAMES ={
+    1007: "Innovation Panel",
+    8085: "Semi-conductor Panel"
+}
 # Decorator to check if user is logged in
 def login_required(f):
     def wrap(*args, **kwargs):
@@ -123,7 +126,11 @@ def submit_attendee_question(panel_number):
 @app.route('/attendee/<int:panel_number>/questions', methods=['GET'])
 def get_attendee_questions(panel_number):
     questions = load_attendee_questions(panel_number)
-    return jsonify(questions)
+    panel_details = {
+        "name":  PANEL_NAMES.get(panel_number, "GENERIC PANEL"),
+        "questions": questions
+    }
+    return jsonify(panel_details)
 
 @app.route('/attendee/<int:panel_number>/upvote//<question_id>', methods=['POST'])
 def upvote_attendee_question_route(panel_number, question_id):
@@ -134,7 +141,11 @@ def upvote_attendee_question_route(panel_number, question_id):
 @login_required
 def get_questions(panel_number):
     questions = load_panel_questions(panel_number)
-    return jsonify(questions)
+    panel_details = {
+        "name":  PANEL_NAMES.get(panel_number, "GENERIC PANEL"),
+        "questions": questions
+    }
+    return jsonify(panel_details)
 
 @app.route('/moderator/login/<int:panel_number>', methods=['GET', 'POST'])
 def moderator_login(panel_number):
