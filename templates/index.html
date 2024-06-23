@@ -85,6 +85,7 @@
     </style>
 </head>
 <body>
+    <h1 id="panel-name"></h1>
     <div id="question-container"></div>
     <div class="button-container">
         <button id="prev-btn">Prev</button>
@@ -99,8 +100,10 @@
 
         async function loadQuestions() {
             const response = await fetch('/questions/{{ panel_number }}');
-            const newQuestions = await response.json();
-            questions = newQuestions;
+            const panelDetails = await response.json();
+            questions = panelDetails.questions;
+            panelName = panelDetails.name;
+            displayPanelName();
             displayQuestion();
         }
 
@@ -118,6 +121,12 @@
                         </div>
                     </div>
                 `;
+            }
+        }
+        
+        function displayPanelName() {
+            if (panelName) {
+                document.getElementById('panel-name').innerHTML = `${panelName}`;
             }
         }
 
