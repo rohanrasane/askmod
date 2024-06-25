@@ -10,16 +10,19 @@ app.secret_key = 'your_secret_key'  # Replace with your secret key
 PANEL_QUESTIONS_SHEET_IDS = {
     1007: '1Z6xYRHIK6acEU4enmNLyR7jtTMMS86I3LgrqRoeHO-M',  # Panel 1 Sheet ID
     8085: '1JxclR4A23a11HMAG7JMc_3yzh2LwbjLWBLJMg5xk2vA',  # Replace with Panel 2 Sheet ID
+    1010: '1aANU1b8D_UEWSlLfez_N2xQ-1DmycRO9KUvZB8qundE',  # Replace with Panel 2 Sheet ID
     # Add more panels as needed
 }
 GOOGLE_SHEET_ID = {
     1007: '1UmKe0yqeeZXi1wnbeVIkd_lpLInBTmdXgyynaKaqygQ',  # Panel 1 Sheet ID
     8085: '1KV9ejInqh9r-akB3FVvI20Z9HCobX6tItUtyfuYcy-E',  # Replace with Panel 2 Sheet ID
+    1010: '17RsWzfHMM4_YQvk_eoqVkldT7i8jgf6cR185vcJz_r8',  # Replace with Panel 2 Sheet ID
     # Add more panels as needed
 }
 PANEL_NAMES ={
     1007: "Innovation Panel",
-    8085: "Semi-conductor Panel"
+    8085: "Semi-conductor Panel",
+    1010: "Cyber Security Panel"
 }
 # Decorator to check if user is logged in
 def login_required(f):
